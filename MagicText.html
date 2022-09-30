@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>Magic Text</title>
+<script>
+let arr = "QWERTYUIOPASDFGHJKLZXCVBNM0123456789!@#$%^&*()_+<>/?\|=-',\"`~. "
+let key = ""
+window.onload = () => {
+let i = 0;
+let str = ""
+document.body.onclick = () => {
+if (i == key.length && i != 0) {
+document.body.innerHTML='<span id="div">START</span><input id="inp"/>'
+window.onload()
+}
+}
+div.onclick = () => {
+key = inp.value
+if (key == "") return
+if (key.toUpperCase() != key) return
+inp.style.visibility = "hidden"
+let t = setInterval(() => {
+let str = rnd(0, arr.length-1)
+if (str == key[i]) {
+div.insertAdjacentHTML("beforebegin", str)
+i++;
+}
+if (i == key.length) { 
+clearInterval(t)
+div.innerHTML=""
+return
+}
+div.innerHTML=str
+}, 60)
+}
+}
+let rnd = (min, max) => {
+
+let r = Math.round(Math.random()*(max-min))
+return arr[r]
+}
+</script>
+</head>
+<style>
+body {
+margin-top: 15%;
+text-align: center;
+background-color: rgb(13, 16, 18);
+color: white;
+}
+#inp {
+background-color: rgb(17, 16, 22)
+}
+</style>
+<body>
+
+<span id="div">START</span>
+<input id="inp"/>
+</span>
+</body>
+</html>
