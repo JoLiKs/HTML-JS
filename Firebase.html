@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background-color: #248e41;
+        }
+        #b {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            display: block;
+            background-color: #8e8a83;
+            border-radius: 10px;
+            background-image: url("cat1.png");
+            background-size: cover;
+        }
+    </style>
+
+</head>
+<body>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js";
+    import { getDatabase, ref, set, get, child} from "https://www.gstatic.com/firebasejs/9.12.1/firebase-database.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyA5eFiwIRQq4mosg68y8sNffO3vgYwB58M",
+        authDomain: "dota-890dd.firebaseapp.com",
+        databaseURL: "https://dota-890dd.firebaseio.com",
+        projectId: "dota-890dd",
+        storageBucket: "dota-890dd.appspot.com",
+        messagingSenderId: "625282701331",
+        appId: "1:625282701331:web:489b5f2f652c244e4287e6"
+    };
+
+    // Initialize Firebase
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    window.onload = () => {
+        function setPos() {
+            const starCountRef = ref(database);
+            get(child(starCountRef, `Dota/`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    b.style.left = snapshot.val().posX;
+                    b.style.top = snapshot.val().posY;
+                } else {
+                    console.log("No data available");
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+let t = setInterval(() => setPos(), 500)
+        setPos()
+        let onb = false;
+window.onkeydown = (e) => {
+    if (e.key == "s") {
+        clearInterval(t)
+        console.log("Interval stoped!")
+    }
+}
+window.onmousemove = (e) => {
+if (e.pageX-parseInt(b.style.left) != 75 || e.pageY-parseInt(b.style.top) != 75) onb = false
+}
+        b.onmousedown = () => {
+            onb = true
+            b.onmousemove = (e) => {
+                if (onb) {
+                    // console.log(onb)
+                    b.style.left = e.clientX - 75 + "px"
+                    b.style.top = e.clientY - 75 + "px"
+                    set(ref(database, 'Dota'), {
+                        posX: b.style.left,
+                        posY: b.style.top
+                    });
+                    //console.log(parseInt(b.style.left) + " " + e.pageX)
+                }
+            }
+
+        }
+        document.body.onmouseup = () => onb = false;
+    }
+</script>
+<div id="b"></div>
+
+</body>
+</html>
